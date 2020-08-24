@@ -62,6 +62,7 @@ public class DaoFactory {
         return new UserDao();
     }
 
+    public RequestDao getRequestDao(){return new RequestDao();}
 
     public AdminDao getAdminDao(){return new AdminDao();}
 

@@ -2,20 +2,20 @@ package kz.qbots.command.impl;
 
 import kz.qbots.command.Command;
 import kz.qbots.util.Const;
+import kz.qbots.util.type.WaitingType;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.sql.SQLException;
 
-public class id003_ClientShowInfo extends Command {
+public class id020_Menu extends Command {
+
     @Override
     public boolean execute() throws SQLException, TelegramApiException {
-        if (isRegistered()) {
-            sendMessageWithAddition();
-            deleteMessage(updateMessageId);
-        } else{
-            sendMessage(Const.THE_MAIN_MENU,chatId);
-        }
+        getMenu();
         return EXIT;
+    }
 
+    public int getMenu() throws TelegramApiException{
+        return botUtils.sendMessage(Const.THE_MAIN_MENU,chatId);
     }
 }

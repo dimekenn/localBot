@@ -1,9 +1,7 @@
 package kz.qbots.command;
 
 
-import kz.qbots.command.impl.id001_ShowInfo;
-import kz.qbots.command.impl.id002_SelectLang;
-import kz.qbots.command.impl.id003_ClientShowInfo;
+import kz.qbots.command.impl.*;
 import kz.qbots.exeption.NotRealizedMethodException;
 
 public class CommandFactory {
@@ -21,8 +19,16 @@ public class CommandFactory {
                 return new id002_SelectLang();
             case 3:
                 return new id003_ClientShowInfo();
-
-
+            case 20:
+                return new id020_Menu();
+            case 21:
+                return new id021_Request();
+            case 22:
+                return new id022_AboutUs();
+            case 23:
+                return new id023_Services();
+            case 24:
+                return new id024_Contacts();
 
         }
 

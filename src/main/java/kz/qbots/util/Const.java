@@ -35,12 +35,12 @@ public class Const {
     public static final long COMMAND_NOT_FOUND = 13;
     public static final int WELCOME_TEXT_WHEN_START = 2;
     public static final int EDIT_BUTTON_ICON = 3;
-    public static final int GET_FULL_NAME_FROM_REGISTRATION = 200;
-    public static final int GET_PHONE_NUMBER_FROM_REGISTRATION = 201;
     public static final int WRONG_DATA_MESSAGE = 202;
     public static final int WRONG_CLIENT = 6;
-
-
-
-
+    public static final int THE_MAIN_MENU = 200;
+    public static final int FULL_NAME = 201;
+    public static final int GET_PHONE_NUMBER_FROM_REGISTRATION = 202;
+    public static final int REQUEST_SAVED = 203;
+    public static final int GET_FULL_NAME_FROM_REGISTRATION = 1000;
+    public static final int GET_SERVICES = 204;
 }

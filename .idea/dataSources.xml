@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="Qbots" uuid="bdeab05c-5ecc-4e8b-b807-e2ba7492a709">
+    <data-source source="LOCAL" name="Qbots" uuid="566e016b-4e98-4894-9e8a-6e5ffb1bbe6d">
       <driver-ref>h2.unified</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.h2.Driver</jdbc-driver>
