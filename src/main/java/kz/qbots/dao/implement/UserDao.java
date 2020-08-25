@@ -27,7 +27,12 @@ public class UserDao extends AbstractDao<User> {
 
     @Override
     protected User mapper(ResultSet rs, int index) throws SQLException {
-        return null;
+        User user = new User();
+        user.setId(rs.getInt(1));
+        user.setChatId(rs.getLong(2));
+        user.setFullName(rs.getString(3));
+        user.setUserName(rs.getString(4));
+        return user;
     }
 
     public User getUserByChatId(long chatId) {

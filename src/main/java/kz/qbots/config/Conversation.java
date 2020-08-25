@@ -2,7 +2,9 @@ package kz.qbots.config;
 
 
 import kz.qbots.command.Command;
+import kz.qbots.command.impl.id005_GroupManager;
 import kz.qbots.dao.DaoFactory;
+import kz.qbots.dao.implement.ButtonDao;
 import kz.qbots.dao.implement.MessageDao;
 import kz.qbots.entity.standart.Language;
 import kz.qbots.entity.standart.Message;
@@ -19,6 +21,7 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Date;
 
@@ -31,6 +34,7 @@ public class Conversation {
     private static long currentChatId;
     private DaoFactory factory = DaoFactory.getFactory();
     private MessageDao messageDao;
+    private ButtonDao buttonDao;
 
     public static long getCurrentChatId() {
         return currentChatId;
@@ -42,6 +46,19 @@ public class Conversation {
         currentChatId = chatId;
         messageDao = factory.getMessageDao();
         checkLang(chatId);
+        try {
+            if (chatId < 0) {
+                command = new id005_GroupManager();
+                commandExecute(update, bot);
+                return;
+            }
+            if (chatId > 0) {
+                checkLanguage(chatId);
+            }
+        } catch (NullPointerException | IOException e) {
+            log.error("Ошибка в groupManager", e);
+        }
+
         try {
             command = commandService.getCommand(update);
             if (command != null) {
@@ -78,6 +95,19 @@ public class Conversation {
         }
     }
 
+    private void commandExecute(Update update, DefaultAbsSender bot) throws TelegramApiException, IOException, SQLException {
+        if (command.isInitNormal(update, bot)) {
+            clear();
+            return;
+        }
+        boolean commandFinished = command.execute();
+        if (commandFinished) clear();
+    }
+
+    private void checkLanguage(long chatId) {
+        if (LanguageService.getLanguage(chatId) == null) LanguageService.setLanguage(chatId, Language.ru);
+    }
+
     private void printUpdate(Update update) {
         String dateMessage = "";
         if (update.hasMessage()) {
@@ -90,6 +120,19 @@ public class Conversation {
 //    public static DefaultAbsSender getBot() {
 //        return Main.getBot();
 //    }
+
+    private String regForGroup(Update update, String inputtedText) {
+        if (update.hasMessage() && update.getMessage().hasText() && UpdateUtil.getChatId(update) > 0) {
+            try {
+                String[] split = update.getMessage().getText().split(" ");
+                if (split[0].equals("/start") && split[1] != null && !split[1].isEmpty()) {
+                    return buttonDao.getButton(75).getName();
+                }
+            } catch (Exception e) {
+            }
+        }
+        return inputtedText;
+    }
 
     void clear() {
         command.clear();

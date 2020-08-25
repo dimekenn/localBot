@@ -65,6 +65,14 @@ public class DaoFactory {
 
     public AdminDao getAdminDao(){return new AdminDao();}
 
+    public ReportDao getReportDao(){return new ReportDao();}
+
+    public GroupDao getGroupDao(){return new GroupDao();}
+
+    public ReportArchiveDao getReportArchiveDao(){return new ReportArchiveDao();}
+
+    public FileDao getFileDao(){return new FileDao();}
+
 
 
 }

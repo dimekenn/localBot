@@ -13,8 +13,9 @@ public class Const {
     public final static int INFO    =    7;
 
     // -------- KEYBOARD_ID --------------
-    public final static int MAIN_MENU_KEYBOARD_ID = 1;
-    public final static int EDIT_QUEST_KEYBOARD = 18;
+
+    public static final int MAIN_MENU_CLIENT = 3;
+    public static final int KEYBOARD_TO_DEV = 4;
     // -------- BUTTON ID ----------------
     public final static int SET_REPORT = 2;
     public final static int SET_REQUEST = 1;
@@ -39,6 +40,9 @@ public class Const {
     public static final int GET_PHONE_NUMBER_FROM_REGISTRATION = 201;
     public static final int WRONG_DATA_MESSAGE = 202;
     public static final int WRONG_CLIENT = 6;
+    public static final int REPORT_TEXT_SEND = 7;
+    public static final int REPORT_AUDIO_VIDEO_SEND = 8;
+    public static final int REPORT_AUDIO_VIDEO_SUBMITTED = 9;
 
 
 

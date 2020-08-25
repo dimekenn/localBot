@@ -53,6 +53,7 @@ public abstract class Command {
     protected final static boolean EXIT = true;
     protected final static boolean COMEBACK = false;
     protected Message updateMessage;
+    protected String updateMessageFile;
 
     protected static DaoFactory factory = DaoFactory.getFactory();
     protected static ButtonDao buttonDao = factory.getButtonDao();
@@ -60,6 +61,10 @@ public abstract class Command {
     protected static KeyboardMarkUpDao keyboardMarkUpDao = factory.getKeyboardMarkUpDao();
     protected static UserDao userDao = factory.getUserDao();
     protected static AdminDao adminDao = factory.getAdminDao();
+    protected static ReportDao reportDao = factory.getReportDao();
+    protected static GroupDao groupDao = factory.getGroupDao();
+    protected static ReportArchiveDao reportArchiveDao = factory.getReportArchiveDao();
+    protected static FileDao fileDao = factory.getFileDao();
 
 
     public abstract boolean execute() throws SQLException, TelegramApiException;
@@ -105,8 +110,36 @@ public abstract class Command {
         deleteMessage(chatId, messageId);
     }
 
-    protected void deleteKeyboard(){
-
+    public boolean isInitNormal(Update update, DefaultAbsSender bot) {
+        if (botUtils == null) botUtils = new BotUtil(bot);
+        this.update = update;
+        this.bot = bot;
+        chatId = UpdateUtil.getChatId(update);
+        if (update.hasCallbackQuery()) {
+            CallbackQuery callbackQuery = update.getCallbackQuery();
+            updateMessage = callbackQuery.getMessage();
+            updateMessageText = callbackQuery.getData();
+            updateMessageId = updateMessage.getMessageId();
+            editableTextOfMessage = callbackQuery.getMessage().getText();
+        } else if (update.hasMessage()) {
+            updateMessage = update.getMessage();
+            updateMessageId = updateMessage.getMessageId();
+            if (updateMessage.hasText()) updateMessageText = updateMessage.getText();
+            if (updateMessage.hasPhoto()) {
+                int size = update.getMessage().getPhoto().size();
+                updateMessagePhoto = update.getMessage().getPhoto().get(size - 1).getFileId();
+            } else {
+                updateMessagePhoto = null;
+            }
+            if (updateMessage.hasDocument()) {
+                updateMessageFile = update.getMessage().getDocument().getFileId();
+            } else {
+                updateMessageFile = null;
+            }
+        }
+        if (hasContact()) updateMessagePhone = update.getMessage().getContact().getPhoneNumber();
+        if (markChange == null) markChange = getText(Const.EDIT_BUTTON_ICON);
+        return COMEBACK;
     }
 
     protected void deleteMessage(long chatId, int messageId) {
