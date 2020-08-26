@@ -7,7 +7,10 @@ import kz.qbots.entity.standart.ReportArchive;
 import kz.qbots.entity.standart.User;
 import kz.qbots.util.Const;
 import kz.qbots.util.type.WaitingType;
+import org.telegram.telegrambots.meta.api.methods.send.SendAudio;
 import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
+import org.telegram.telegrambots.meta.api.methods.send.SendVideo;
+import org.telegram.telegrambots.meta.api.methods.send.SendVoice;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.sql.SQLException;
@@ -23,7 +26,7 @@ public class id004_ReportBug extends Command {
         switch (waitingType){
             case START:
                 deleteMessage(updateMessageId);
-                sendMessage(Const.REPORT_TEXT_SEND);
+                sendMessageWithoutKeyboard(Const.REPORT_TEXT_SEND);
                 report.setChat_id(chatId);
                 User user = userDao.getUserByChatId(chatId);
                 report.setNameOfClient(user.getFullName());
@@ -35,12 +38,14 @@ public class id004_ReportBug extends Command {
                     sendMessage(Const.REPORT_AUDIO_VIDEO_SEND);
                     waitingType = WaitingType.SEND_REPORT_PHOTO_VIDEO;
                     return COMEBACK;
-                }
-                if (updateMessage.hasAudio()){
-                    report.setAudio(updateMessage.getAudio().getFileId());
+                } else if (updateMessage.hasVoice()){
+                    report.setAudio(updateMessage.getVoice().getFileId());
                     sendMessage(Const.REPORT_AUDIO_VIDEO_SEND);
                     waitingType = WaitingType.SEND_REPORT_PHOTO_VIDEO;
                     return COMEBACK;
+                } else {
+                    sendMessage(Const.WRONG_DATA_MESSAGE);
+                    sendMessageWithoutKeyboard(Const.REPORT_TEXT_SEND);
                 }
             case SEND_REPORT_PHOTO_VIDEO:
                 if (updateMessage.hasPhoto()){
@@ -50,14 +55,16 @@ public class id004_ReportBug extends Command {
                     reportDao.insert(report);
                     sendReport();
                     return COMEBACK;
-                }
-                if (updateMessage.hasVideo()){
+                }else if (updateMessage.hasVideo()){
                     report.setVideo(updateMessage.getVideo().getFileId());
                     report.setDate(new Date());
                     sendMessageWithKeyboard(getText(Const.REPORT_AUDIO_VIDEO_SUBMITTED), Const.MAIN_MENU_CLIENT);
                     reportDao.insert(report);
                     sendReport();
                     return COMEBACK;
+                } else{
+                    sendMessage(Const.WRONG_DATA_MESSAGE);
+                    sendMessage(Const.REPORT_AUDIO_VIDEO_SEND);
                 }
         }
         return EXIT;
@@ -76,8 +83,14 @@ public class id004_ReportBug extends Command {
                 }
             }
             sb.append("Новое обращение №: " + report.getId()).append(next);
-            sb.append("Text obrashenie: ").append(report.getText()).append(next);
-            sb.append("Status obrasheine: " + report.getIdStatus());
+            if (!reportDao.hasAudio(report)) {
+                sb.append("Текст: ").append(report.getText()).append(next);
+            } else {
+                bot.execute(new SendVoice().setVoice(report.getAudio()).setChatId(group.getChatId()));
+                bot.execute(new SendVoice().setVoice(report.getAudio()).setChatId(smGroup.getChatId()));
+            }
+
+            sb.append("Статус: На рассмотрении");
 
         if (group.getId() != 0) {
             sendMessage(sb.toString(), group.getChatId());
@@ -88,6 +101,9 @@ public class id004_ReportBug extends Command {
         if (report.getPhoto() !=null){
             bot.execute(new SendPhoto().setPhoto(report.getPhoto()).setChatId(group.getChatId()));
             bot.execute(new SendPhoto().setPhoto(report.getPhoto()).setChatId(smGroup.getChatId()));
+        } else {
+            bot.execute(new SendVideo().setVideo(report.getVideo()).setChatId(group.getChatId()));
+            bot.execute(new SendVideo().setVideo(report.getVideo()).setChatId(smGroup.getChatId()));
         }
         sendMessage(getText(10));
     }

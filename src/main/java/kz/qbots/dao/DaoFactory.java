@@ -73,6 +73,14 @@ public class DaoFactory {
 
     public FileDao getFileDao(){return new FileDao();}
 
+    public DeveloperDao getDeveloperDao(){return new DeveloperDao();}
+
+    public SalesManagerDao getSalesManagerDao(){return new SalesManagerDao();}
+
+    public RequestDao getRequestDao(){
+        return new RequestDao();
+    }
+
 
 
 }

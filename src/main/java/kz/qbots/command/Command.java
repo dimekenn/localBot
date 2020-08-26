@@ -65,7 +65,9 @@ public abstract class Command {
     protected static GroupDao groupDao = factory.getGroupDao();
     protected static ReportArchiveDao reportArchiveDao = factory.getReportArchiveDao();
     protected static FileDao fileDao = factory.getFileDao();
-
+    protected static DeveloperDao developerDao = factory.getDeveloperDao();
+    protected static SalesManagerDao salesManagerDao = factory.getSalesManagerDao();
+    protected static RequestDao requestDao = factory.getRequestDao();
 
     public abstract boolean execute() throws SQLException, TelegramApiException;
 

@@ -5,6 +5,7 @@ import kz.qbots.entity.standart.Report;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 
 public class ReportDao extends AbstractDao<Report> {
 
@@ -42,6 +43,17 @@ public class ReportDao extends AbstractDao<Report> {
         sql = "UPDATE REPORT SET ID_STATUS = ? WHERE ID = ?";
         getJdbcTemplate().update(sql, statusId, id);
     }
+
+    public boolean hasAudio(Report report){
+        sql = "SELECT COUNT(AUDIO) FROM REPORT WHERE ID = ?";
+        return getJdbcTemplate().queryForObject(sql, setParam(report.getId()), Integer.class) > 0;
+    }
+
+    public long getCustomerId(Report report){
+        sql = "SELECT CHAT_ID FROM REPORT WHERE ID = ?";
+        return getJdbcTemplate().queryForObject(sql, setParam(report.getId()), Long.class);
+    }
+
 
     @Override
     protected Report mapper(ResultSet rs, int index) throws SQLException {

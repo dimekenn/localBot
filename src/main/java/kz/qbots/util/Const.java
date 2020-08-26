@@ -37,13 +37,19 @@ public class Const {
     public static final int WELCOME_TEXT_WHEN_START = 2;
     public static final int EDIT_BUTTON_ICON = 3;
     public static final int GET_FULL_NAME_FROM_REGISTRATION = 200;
-    public static final int GET_PHONE_NUMBER_FROM_REGISTRATION = 201;
-    public static final int WRONG_DATA_MESSAGE = 202;
+    public static final int GET_PHONE_NUMBER_FROM_REGISTRATION = 202;
+    public static final int WRONG_DATA_MESSAGE = 15;
     public static final int WRONG_CLIENT = 6;
     public static final int REPORT_TEXT_SEND = 7;
     public static final int REPORT_AUDIO_VIDEO_SEND = 8;
     public static final int REPORT_AUDIO_VIDEO_SUBMITTED = 9;
-
+    public static final int SEND_FULL_NAME = 14;
+    public static final int SEND_CONTACT_NUMBER = 17;
+    public static final int THE_MAIN_MENU = 200;
+    public static final int REGISTRATION_SUCCESS = 16;
+    public static final int FULL_NAME = 201;
+    public static final int REQUEST_SAVED = 203;
+    public static final int GET_SERVICES = 204;
 
 
 
