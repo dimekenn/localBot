@@ -75,13 +75,13 @@ public class id004_ReportBug extends Command {
         report = reportDao.getById(reportDao.getLastId());
         Group group = factory.getGroupDao().getGroupToId(1);
         Group smGroup = factory.getGroupDao().getGroupToId(2);
-        List<ReportArchive> archiveList = reportArchiveDao.getReportList(report.getId());
+        //List<ReportArchive> archiveList = reportArchiveDao.getReportList(report.getId());
         StringBuilder sb = new StringBuilder();
-            if (archiveList.size() != 0) {
-                for (ReportArchive reports : archiveList) {
-                    sb.append(reports.getText()).append(next);
-                }
-            }
+//            if (archiveList.size() != 0) {
+//                for (ReportArchive reports : archiveList) {
+//                    sb.append(reports.getText()).append(next);
+//                }
+//            }
             sb.append("Новое обращение №: " + report.getId()).append(next);
             if (!reportDao.hasAudio(report)) {
                 sb.append("Текст: ").append(report.getText()).append(next);
